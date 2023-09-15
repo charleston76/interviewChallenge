@@ -10,7 +10,7 @@ import getCapacidadeGroupMembrosByMemberId from '@salesforce/apex/CapacidadeGrup
 import setEditarGroupMembro from '@salesforce/apex/CapacidadeGrupoController.setEditarGroupMembro';
 
 
-export default class AjustarMembroCapacidade extends LightningElement {
+export default class customInvoice extends LightningElement {
     objectApiName = 'CustomGroupMembers__c'; //Objeto com campo lookup
     targetLkpField = 'User__c'; //Nome do campo lookup
     hasUpdateApplied = false;
