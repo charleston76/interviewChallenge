@@ -1,0 +1,53 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "Account",
+                "referenceId": "AccountRef1"
+            },
+            "Name": "Main Account",
+            "BillingStreet": "120 Terra Street",
+            "BillingCity": "Barueri",
+            "BillingState": "SP",
+            "BillingPostalCode": "06414312",
+            "BillingCountry": "Brazil",
+            "ShippingStreet": "120 Terra Street",
+            "ShippingCity": "Barueri",
+            "ShippingState": "SP",
+            "ShippingPostalCode": "06414312",
+            "ShippingCountry": "Brazil",
+            "Contacts": {
+                "records": [
+                    {
+                        "attributes": {
+                            "type": "Contact",
+                            "referenceId": "ContactRef1"
+                        },
+                        "LastName": "Contact",
+                        "FirstName": "First",
+                        "Salutation": "Mr.",
+                        "MailingStreet": "120 Terra Street",
+                        "MailingCity": "Barueri",
+                        "MailingState": "SP",
+                        "MailingPostalCode": "06414312",
+                        "MailingCountry": "Brazil"
+                    },
+                    {
+                        "attributes": {
+                            "type": "Contact",
+                            "referenceId": "ContactRef2"
+                        },
+                        "LastName": "Contact",
+                        "FirstName": "Second",
+                        "Salutation": "Mr.",
+                        "MailingStreet": "120 Terra Street",
+                        "MailingCity": "Barueri",
+                        "MailingState": "SP",
+                        "MailingPostalCode": "06414312",
+                        "MailingCountry": "Brazil"
+                    }
+                ]
+            }
+        }
+    ]
+}
