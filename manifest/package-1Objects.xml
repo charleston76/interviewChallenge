@@ -1,32 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
-	<types>
-		<members>Invoice__c.BitcoinPrice__c</members>
-		<members>Invoice__c.ContactId__c</members>
-		<members>Invoice__c.ExpirationDate__c</members>
-		<members>Invoice__c.Price__c</members>
-		<members>Invoice__c.Status__c</members>
-		<name>CustomField</name>
-	</types>
-	<types>
-		<members>Invoice__c</members>
-		<name>CustomObject</name>
-	</types>
-	<types>
-		<members>Invoice__c</members>
-		<name>CustomTab</name>
-	</types>
-	<types>
-		<members>Invoice__c-Invoice Layout</members>
-		<name>Layout</name>
-	</types>
-	<types>
-		<members>Invoice__c.All</members>
-		<name>ListView</name>
-	</types>
-	<types>
-		<members>InterviewChallenge</members>
-		<name>PermissionSet</name>
-	</types>
-	<version>58.0</version>
+    <types>
+        <members>Contact.OpenInvoices__c</members>
+        <members>Contact.PastInvoices__c</members>
+        <members>Contact.TotalAmountPaid__c</members>
+        <members>Invoice__c.BitcoinPrice__c</members>
+        <members>Invoice__c.ContactId__c</members>
+        <members>Invoice__c.ExpirationDate__c</members>
+        <members>Invoice__c.Price__c</members>
+        <members>Invoice__c.Status__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>Invoice__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Invoice__c</members>
+        <name>CustomTab</name>
+    </types>
+    <types>
+        <members>Contact-Contact Layout</members>
+        <members>Invoice__c-Invoice Layout</members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>Invoice__c.All</members>
+        <name>ListView</name>
+    </types>
+    <types>
+        <members>InterviewChallenge</members>
+        <name>PermissionSet</name>
+    </types>
+    <version>58.0</version>
 </Package>

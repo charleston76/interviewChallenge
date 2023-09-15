@@ -232,6 +232,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Contact.OpenInvoices__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Contact.OtherAddress</field>
         <readable>true</readable>
@@ -239,6 +244,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Contact.OtherPhone</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contact.PastInvoices__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -259,6 +269,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Contact.Title</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contact.TotalAmountPaid__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

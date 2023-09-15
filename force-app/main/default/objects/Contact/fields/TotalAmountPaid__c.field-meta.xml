@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TotalAmountPaid__c</fullName>
+    <externalId>false</externalId>
+    <label>Total Amount Paid</label>
+    <summarizedField>Invoice__c.Price__c</summarizedField>
+    <summaryFilterItems>
+        <field>Invoice__c.Status__c</field>
+        <operation>equals</operation>
+        <value>Paid</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Invoice__c.ContactId__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <type>Summary</type>
+</CustomField>
