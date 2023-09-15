@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>BitcoinPrice__c</fullName>
+    <fullName>ExpirationDate__c</fullName>
     <externalId>false</externalId>
-    <label>Bitcoin Price</label>
-    <precision>18</precision>
+    <label>Expiration Date</label>
     <required>false</required>
-    <scale>2</scale>
     <trackHistory>false</trackHistory>
-    <type>Number</type>
-    <unique>false</unique>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
 </CustomField>

@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
 	<types>
-		<members>Invoice.BitcoinPrice__c</members>
-		<members>Invoice.ExpirationDate__c</members>
-		<members>Invoice.Price__c</members>
-		<members>Invoice.Status__c</members>
+		<members>Invoice__c.BitcoinPrice__c</members>
+		<members>Invoice__c.ContactId__c</members>
+		<members>Invoice__c.ExpirationDate__c</members>
+		<members>Invoice__c.Price__c</members>
+		<members>Invoice__c.Status__c</members>
 		<name>CustomField</name>
 	</types>
 	<types>
-		<members>Invoice-Custom Invoice Layout</members>
+		<members>Invoice__c</members>
+		<name>CustomObject</name>
+	</types>
+	<types>
+		<members>Invoice__c</members>
+		<name>CustomTab</name>
+	</types>
+	<types>
+		<members>Invoice__c-Invoice Layout</members>
 		<name>Layout</name>
 	</types>
 	<types>
-		<members>Invoice.CustomInvoiceVisualization</members>
+		<members>Invoice__c.All</members>
 		<name>ListView</name>
 	</types>
 	<types>

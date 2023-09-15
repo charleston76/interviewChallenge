@@ -8,11 +8,11 @@ What is supposed to show you here?
 
 * Salesforce CLI knowledge;
     * Deployments and validations;
-    * Metadata creation;
-    * Data creation;
+    * Metadata manipulation;
+    * Data manipulation;
     * Permission assignment;
 * Bash script knowledge;
-* Salesforce metadata knowledge;
+
 
 
 So, let's step by step get this project running...
@@ -27,7 +27,7 @@ To make our lives easy, we can automate many things, putting the Salesforce CLI,
 
 ## 02 - Custom fields and permissions
 
-I'm using the default Invoice object here, with some custom fields on that.
+I'm using a custom Invoice object here.
 To create the necessary things and have access on that, just execute the command below:
 
     sf project deploy start --ignore-conflicts --manifest manifest/package-1Objects.xml
