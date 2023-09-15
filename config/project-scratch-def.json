@@ -1,6 +1,7 @@
 {
-  "orgName": "Demo company",
+  "orgName": "Total IT",
   "edition": "Developer",
+  "country": "US",  
   "features": ["EnableSetPasswordInApi"],
   "settings": {
     "lightningExperienceSettings": {
