@@ -1,0 +1,79 @@
+<template>
+    <template if:true={isLoading} >
+        <strong class="slds-m-left_small">Loading</strong>
+        <lightning-spinner  alternative-text='Loading' class="slds-is-absolute slds-align_absolute-center"></lightning-spinner>
+    </template>
+    <div class="invoice-alignment">
+        <lightning-card title="Invoice Generator">
+            <div class="slds-size_2-of-2 slds-p-left_xx-small slds-p-right_small">
+                <lightning-input type="number" 
+                    data-id="txtPrice"
+                    label="USD Price" 
+                    value={txtPrice}
+                    formatter="currency" 
+                    onchange={handlePriceChange}
+                    placeholder="$"
+                    step="0.01">
+                </lightning-input>
+            </div>
+            <div class="slds-size_2-of-2 slds-p-left_xx-small slds-p-right_small">
+                <lightning-input 
+                    data-id="txtExpirationDate"
+                    type="date" 
+                    label="Expiration Date" 
+                    value={txtExpirationDate}
+                    onchange={handleExpirationDateChange} >
+                </lightning-input>
+            </div>
+            <div class="slds-grid slds-wrap">
+                <div class="slds-size_2-of-2 slds-p-left_xx-small slds-p-right_small" >
+                    <lightning-textarea
+                        label="Simple description" 
+                        placeholder="Placeholder"
+                        value={txtSimpleDesc}
+                        onchange={handleSimpleDescChange} >
+                    </lightning-textarea>
+                </div>
+            </div>
+            <div>
+                <lightning-accordion onsectiontoggle={handleSectionToggle}>
+                    <lightning-accordion-section name="contactInfo" label="Additional Contact Information">
+                        <div class="slds-grid slds-wrap slds-border_top">
+                            <div class="slds-size_1-of-2">
+                                <label class="slds-form-element__label" for="unique-id-of-input">Number of all Past Invoices</label>
+                            </div>
+                            <div class="slds-size_1-of-2 slds-text-align_right">
+                                <label class="slds-form-element__label" for="unique-id-of-input">{pastInvoices}</label>
+                            </div>    
+                        </div>
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-size_1-of-2">
+                                <label class="slds-form-element__label" for="unique-id-of-input">Number of Open Invoices</label>
+                            </div>
+                            <div class="slds-size_1-of-2 slds-text-align_right">
+                                <label class="slds-form-element__label" for="unique-id-of-input">{openInvoices}</label>
+                            </div>    
+                        </div>
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-size_1-of-2">
+                                <label class="slds-form-element__label" for="unique-id-of-input">Total Amount Paid</label>
+                            </div>
+                            <div class="slds-size_1-of-2 slds-text-align_right">
+                                <label class="slds-form-element__label" for="unique-id-of-input">{totalAmountPaid}</label>
+                            </div>    
+                        </div>
+                    </lightning-accordion-section>
+                </lightning-accordion>    
+            </div>
+            <div class="slds-text-align_center">
+                <lightning-button
+                    class="slds-p-left_xx-small"
+                    label="Generate Invoice"
+                    onclick={handleGenerateInvoice}
+                    variant="brand"
+                ></lightning-button>
+
+            </div>
+        </lightning-card>
+    </div>
+</template>

@@ -21,6 +21,10 @@
         <name>CustomTab</name>
     </types>
     <types>
+        <members>Contact_Record_Page</members>
+        <name>FlexiPage</name>
+    </types>
+    <types>
         <members>Contact-Contact Layout</members>
         <members>Invoice__c-Invoice Layout</members>
         <name>Layout</name>
