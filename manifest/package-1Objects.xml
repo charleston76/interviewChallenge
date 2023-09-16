@@ -30,6 +30,10 @@
         <name>Layout</name>
     </types>
     <types>
+        <members>invoiceGenerator</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <types>
         <members>Invoice__c.All</members>
         <name>ListView</name>
     </types>
@@ -37,6 +41,9 @@
         <members>InterviewChallenge</members>
         <name>PermissionSet</name>
     </types>
+    <types>
+        <members>coindesk</members>
+        <name>RemoteSiteSetting</name>
+    </types>
     <version>58.0</version>
 </Package>
-invoiceGenerator

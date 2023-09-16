@@ -1,9 +1,7 @@
-import { LightningElement,api, track, wire } from 'lwc';
-import {  getRecord, createRecord , getFieldValue, updateRecord, notifyRecordUpdateAvailable } from 'lightning/uiRecordApi';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import {LightningElement, wire } from 'lwc';
+import {getRecord, createRecord , updateRecord} from 'lightning/uiRecordApi';
+import {ShowToastEvent } from 'lightning/platformShowToastEvent';
 import {CurrentPageReference} from 'lightning/navigation';
-
-import NAME_FIELD from "@salesforce/schema/Contact.Name";
 import OPEN_INVOICES from "@salesforce/schema/Contact.OpenInvoices__c";
 import PAST_INVOICES from "@salesforce/schema/Contact.PastInvoices__c";
 import TOTAL_AMOUNT_PAID from "@salesforce/schema/Contact.TotalAmountPaid__c";
@@ -26,10 +24,9 @@ export default class InvoiceGenerator extends LightningElement {
     getStateParameters(currentPageReference) {
         if (currentPageReference) {
             this.contactId = currentPageReference.attributes.recordId;
-            this.contactFields = [NAME_FIELD, OPEN_INVOICES, PAST_INVOICES, TOTAL_AMOUNT_PAID];
+            this.contactFields = [OPEN_INVOICES, PAST_INVOICES, TOTAL_AMOUNT_PAID];
         }
     }
-
 
     @wire(getRecord, {
         recordId: '$contactId',
@@ -61,7 +58,13 @@ export default class InvoiceGenerator extends LightningElement {
       }
 
       get totalAmountPaid() {
-        return this._totalAmountPaid;
+        // Apply USD using the locale, style, and currency.
+        let USDollar = new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+        });
+        // this._totalAmountPaid.toFixed(2);
+        return USDollar.format(this._totalAmountPaid);
       }
 
       get hasAdditionalInformation(){
@@ -119,6 +122,10 @@ export default class InvoiceGenerator extends LightningElement {
       createRecord(recordInput)
       .then((result) => {
         // console.log(METHOD + ' result', result);
+        this.txtExpirationDate = null;
+        this.txtSimpleDesc = null;
+        this.txtPrice = null;
+
         this.setShowMessage(this.TITLE, 'Invoice generated successfully', this.SUCCESS);
       }).catch((error) => {
         console.log(METHOD + ' error', error);
@@ -133,7 +140,6 @@ export default class InvoiceGenerator extends LightningElement {
       let METHOD = 'updateDetailPage';
         if (this.contactId){
           await updateRecord({ fields: { Id: this.contactId }})
-          await notifyRecordUpdateAvailable([{recordId: this.contactId}]);
       }
     }
 
