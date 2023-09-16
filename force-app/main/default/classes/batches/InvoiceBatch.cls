@@ -1,5 +1,4 @@
 global class InvoiceBatch implements Database.Batchable<sObject>, Database.Stateful, Database.AllowsCallouts {
-// "{\"time\":{\"updated\":\"Sep 16, 2023 22:48:00 UTC\",\"updatedISO\":\"2023-09-16T22:48:00+00:00\",\"updateduk\":\"Sep 16, 2023 at 23:48 BST\"},\"disclaimer\":\"This data was produced from the CoinDesk Bitcoin Price Index (USD). Non-USD currency data converted using hourly conversion rate from openexchangerates.org\",\"chartName\":\"Bitcoin\",\"bpi\":{\"USD\":{\"code\":\"USD\",\"symbol\":\"&#36;\",\"rate\":\"26,568.0978\",\"description\":\"United States Dollar\",\"rate_float\":26568.0978},\"GBP\":{\"code\":\"GBP\",\"symbol\":\"&pound;\",\"rate\":\"22,200.0899\",\"description\":\"British Pound Sterling\",\"rate_float\":22200.0899},\"EUR\":{\"code\":\"EUR\",\"symbol\":\"&euro;\",\"rate\":\"25,881.2062\",\"description\":\"Euro\",\"rate_float\":25881.2062}}}"    
     // Total de registros processados
     global Integer intTotalRegistros = 0;
     global Decimal bitcoinValue = 0;

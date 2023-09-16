@@ -54,7 +54,7 @@ public with sharing class InvoiceHelper {
             objReq.setEndpoint(endPoint );
             // system.debug(CLASS_NAME + ' ' + METHOD_NAME + ' objReq ' + objReq);
             objResp = objHttp.send(objReq);
-            // system.debug(CLASS_NAME + ' ' + METHOD_NAME + ' objResp.getBody ' + JSON.serialize(objResp.getBody()));
+            system.debug(CLASS_NAME + ' ' + METHOD_NAME + ' objResp.getBody ' + objResp.getBody());
             // system.debug(CLASS_NAME + ' ' + METHOD_NAME + ' getStatusCode ' + objResp.getStatusCode());            
         } catch (Exception objEx) { throw objEx;}
         
