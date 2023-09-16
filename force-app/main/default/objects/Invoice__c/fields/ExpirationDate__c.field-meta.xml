@@ -3,7 +3,7 @@
     <fullName>ExpirationDate__c</fullName>
     <externalId>false</externalId>
     <label>Expiration Date</label>
-    <required>false</required>
+    <required>true</required>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Date</type>

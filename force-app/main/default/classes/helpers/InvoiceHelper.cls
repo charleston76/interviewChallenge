@@ -1,65 +1,57 @@
 public with sharing class InvoiceHelper {
     private static string CLASS_NAME = 'InvoiceHelper';
 
-    public static ContactInformation getContactInformationById(String contactId){
-        string METHOD_NAME = 'getContactInformationById';
-        ContactInformation objFound;
+    @Future(callout=true)
+    public static void setBitcoinValue(String invoiceId){
+        String METHOD_NAME = 'setBitcoinValue';
 
         try {
-            Contact rowContact = [
-                SELECT Id, OpenInvoices__c, PastInvoices__c, TotalAmountPaid__c
-                FROM Contact
-                WHERE Id = :contactId
-            ];
+            Map<String, Object> bitcoinMap = sendRequest();
+            Map<String, Object> mapBpi = getMapValue(bitcoinMap,'bpi');
+            bpi objBitcoin = (bpi) System.JSON.deserialize(JSON.serialize(mapBpi), bpi.class);
+            // system.debug(CLASS_NAME + ' ' + METHOD_NAME + ' objBitcoin' + objBitcoin);
+            // system.debug(CLASS_NAME + ' ' + METHOD_NAME + ' objBitcoin.USD.rate_float ' + objBitcoin.USD.rate_float);
 
-            Integer numberAllPastInvoices = rowContact?.PastInvoices__c == null ? 0 : Integer.valueOf(rowContact?.PastInvoices__c) ;
-            Integer numberOpenPastInvoices = rowContact?.OpenInvoices__c == null ? 0 : Integer.valueOf(rowContact?.OpenInvoices__c) ;
-            Decimal totalAmountPaid = rowContact?.TotalAmountPaid__c == null ? 0 : rowContact?.TotalAmountPaid__c ;
 
-            objFound = new ContactInformation(contactId, numberAllPastInvoices, numberOpenPastInvoices, totalAmountPaid);
-            
-        } catch (Exception objEx) { 
-          string strMessage = CLASS_NAME + ' - ' + METHOD_NAME + ' - Error line ' + objEx.getLineNumber() + ' - Type ' + objEx.getTypeName() + ' - Message  ' + objEx.getMessage();
-          System.debug( strMessage);
-          throw new AuraHandledException(strMessage);
-        }
-
-        return objFound;
+        } catch (Exception objEx) { throw objEx;}
 
     }
 
-
-
-    public class ContactInformation{
-        @AuraEnabled
-        public String contactId = '';
-        @AuraEnabled
-        public Integer numberAllPastInvoices = 0;
-        @AuraEnabled
-        public Integer numberOpenPastInvoices = 0;
-        @AuraEnabled
-        public Decimal totalAmountPaid = 0;
-
-        public ContactInformation(){}
-        public ContactInformation(String contactId, Integer numberAllPastInvoices, Integer numberOpenPastInvoices, Decimal totalAmountPaid){
-            this.contactId = contactId;
-            this.numberAllPastInvoices = numberAllPastInvoices;
-            this.numberOpenPastInvoices = numberOpenPastInvoices;
-            this.totalAmountPaid = totalAmountPaid;
-        }
-
+    private static Map<String, Object> getMapValue(Map<String, Object> mapOrigin, String value){
+        return (Map<String, Object>) mapOrigin.get(value);
     }
 
-    public class DMLResult{
-        @AuraEnabled
-        public Boolean isSuccess = false;
-        @AuraEnabled
-        public String dmlMessage='';
+    private static Map<String, Object> sendRequest(){
+        String METHOD_NAME = 'sendRequest';
+        Http objHttp = new Http();
+        HttpRequest objReq = new HttpRequest();
+        HttpResponse objResp;
         
-        public DMLResult(){}
-        public DMLResult(Boolean isSuccess, String dmlMessage){
-          this.isSuccess = isSuccess;
-          this.dmlMessage = dmlMessage;
-        }
-      }
+        try {
+            // In a real scenario, probably we would use a named credential instead 
+            String endPoint = 'https://api.coindesk.com/v1/bpi/currentprice.json';
+            system.debug(CLASS_NAME + ' ' + METHOD_NAME + ' endPoint ' + endPoint);
+
+            objReq.setMethod('GET');
+            objReq.setEndpoint(endPoint );
+            // system.debug(CLASS_NAME + ' ' + METHOD_NAME + ' objReq ' + objReq);
+            objResp = objHttp.send(objReq);
+            // system.debug(CLASS_NAME + ' ' + METHOD_NAME + ' getStatusCode ' + objResp.getStatusCode());            
+        } catch (Exception objEx) { throw objEx;}
+        
+        return (Map<String, Object>) JSON.deserializeUntyped(objResp.getBody());
+    }
+
+    public class bpi{
+        ConvertedMoney USD = new ConvertedMoney();
+        ConvertedMoney GBP = new ConvertedMoney();
+        ConvertedMoney EUR = new ConvertedMoney();
+    }
+
+    public class ConvertedMoney {
+        public string code ='';
+        public string description ='';
+        public Decimal rate_float=0;
+    }
+
 }

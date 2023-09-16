@@ -12,6 +12,7 @@ What is supposed to show you here?
     * Data manipulation;
     * Permission assignment;
 * Salesforce knowledge;
+    * Lightning Data Service;
     * Lightning Design System;
     * Lightning Web Components;
 * Bash script knowledge;
