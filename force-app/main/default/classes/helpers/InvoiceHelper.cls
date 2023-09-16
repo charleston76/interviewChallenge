@@ -10,8 +10,20 @@ public with sharing class InvoiceHelper {
             Map<String, Object> mapBpi = getMapValue(bitcoinMap,'bpi');
             bpi objBitcoin = (bpi) System.JSON.deserialize(JSON.serialize(mapBpi), bpi.class);
             // system.debug(CLASS_NAME + ' ' + METHOD_NAME + ' objBitcoin' + objBitcoin);
-            // system.debug(CLASS_NAME + ' ' + METHOD_NAME + ' objBitcoin.USD.rate_float ' + objBitcoin.USD.rate_float);
+            system.debug(CLASS_NAME + ' ' + METHOD_NAME + ' objBitcoin.USD.rate_float ' + objBitcoin.USD.rate_float);
+            
+            // Select the invoice record to update
+            Invoice__c objInvoice = [
+                SELECT Id, BitcoinPrice__c, Price__c 
+                FROM Invoice__c
+                WHERE Id =: invoiceId
+            ];
 
+            system.debug(CLASS_NAME + ' ' + METHOD_NAME + ' objInvoice.Price__c ' + objInvoice.Price__c);
+
+            objInvoice.BitcoinPrice__c = objInvoice.Price__c / objBitcoin.USD.rate_float;
+            
+            update objInvoice;
 
         } catch (Exception objEx) { throw objEx;}
 
