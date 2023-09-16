@@ -1,5 +1,5 @@
 import { LightningElement,api, track, wire } from 'lwc';
-import {  getRecord, getFieldValue, updateRecord, notifyRecordUpdateAvailable  } from 'lightning/uiRecordApi';
+import {  getRecord, createRecord , getFieldValue, updateRecord, notifyRecordUpdateAvailable } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import {CurrentPageReference} from 'lightning/navigation';
 
@@ -18,20 +18,16 @@ export default class InvoiceGenerator extends LightningElement {
     txtPrice=null;
     txtExpirationDate=null;
     txtSimpleDesc=null;
-    contacInfo = {};
     _pastInvoices=0;
     _openInvoices=0;
     _totalAmountPaid=0;
 
     @wire(CurrentPageReference)
     getStateParameters(currentPageReference) {
-      let METHOD_NAME='getStateParameters';
         if (currentPageReference) {
             this.contactId = currentPageReference.attributes.recordId;
             this.contactFields = [NAME_FIELD, OPEN_INVOICES, PAST_INVOICES, TOTAL_AMOUNT_PAID];
         }
-        console.log(METHOD_NAME + ' this.contactFields ' + this.contactFields);
-        console.log(METHOD_NAME + ' this.contactId ' + this.contactId);
     }
 
 
@@ -40,7 +36,6 @@ export default class InvoiceGenerator extends LightningElement {
         fields: '$contactFields'
       })
       wiredRecord({ error, data }) {
-        console.log(' wiredRecord start');
         if (error) {
           console.log(' wiredRecord error', error);
           let message = "Unknown error";
@@ -51,48 +46,31 @@ export default class InvoiceGenerator extends LightningElement {
           }
           this.setShowMessage(this.TITLE, message, this.ERROR);
         } else if (data) {
-          console.log(' wiredRecord data', data);
-          console.log(' wiredRecord JSON data', JSON.stringify(data));
           this._pastInvoices = data.fields.PastInvoices__c.value;
           this._openInvoices = data.fields.OpenInvoices__c.value;
           this._totalAmountPaid = data.fields.TotalAmountPaid__c.value;
-          this.contacInfo = data;
-          console.log(' wiredRecord contacInfo', this.contacInfo);
-          // this.name = this.contact.fields.Name.value;
-          // this.phone = this.contact.fields.Phone.value;
         }
       }
 
       get pastInvoices() {
-        let METHOD_NAME = 'pastInvoices';
-        console.log(METHOD_NAME + ' this._pastInvoices ' + this._pastInvoices);
         return this._pastInvoices;
       }
 
       get openInvoices() {
-        let METHOD_NAME = 'pastInvoices';
-        console.log(METHOD_NAME + ' this._openInvoices ' + this._openInvoices);
         return this._openInvoices;
       }
 
       get totalAmountPaid() {
-        let METHOD_NAME = 'totalAmountPaid';
-        console.log(METHOD_NAME + ' this._totalAmountPaid ' + this._totalAmountPaid);
         return this._totalAmountPaid;
       }
 
       get hasAdditionalInformation(){
-        let METHOD_NAME = 'hasAdditionalInformation';
-        console.log(METHOD_NAME + ' this.totalAmountPaid ' + this.totalAmountPaid);
-        console.log(METHOD_NAME + ' this.pastInvoices ' + this.pastInvoices);
-        console.log(METHOD_NAME + ' this.openInvoices ' + this.openInvoices);
-        
         return this.pastInvoices > 0;
       }
 
-    // OpenInvoices__c
-    // PastInvoices__c
-    // TotalAmountPaid__c
+    get isDisableGenerate(){
+      return this.txtPrice == null ||this.txtPrice == '' ||  this.txtPrice < 1 || this.txtExpirationDate ==null ||  this.txtExpirationDate == '';
+    }
 
     handlePriceChange(event) {
         this.txtPrice = event.detail.value;
@@ -107,55 +85,73 @@ export default class InvoiceGenerator extends LightningElement {
     }
 
     handleSectionToggle(event){
-        let METHOD = 'handleSectionToggle';
-
-        console.log(METHOD + ' event.detail.openSections ' + event.detail.openSections);
+      let METHOD = 'handleSectionToggle';
+      // Doing nothing here
+      console.log(METHOD + ' event.detail.openSections ' + event.detail.openSections);
     }
 
     handleGenerateInvoice(){
-        let strMessage = '';
-        let METHOD = 'handleGenerateInvoice';
-        
-        console.log(METHOD + ' start ');
+      let METHOD = 'handleGenerateInvoice';
+      let strMessage = '';
+      this.isLoading = true;
+      strMessage = this.getScreenValidation();
 
-        strMessage = this.getScreenValidation();
-        console.log(METHOD + ' strMessage', strMessage);
+      if ( strMessage.trim() !=''  ){
+        this.isLoading = false;
+          this.setShowMessage(this.TITLE, strMessage, this.ERROR);
+          return;
+      }
 
-        if ( strMessage.trim() !=''  ){
-            this.setShowMessage(this.TITLE, strMessage, this.ERROR);
-            return;
-        }
+      const fields = {
+        ContactId__c : this.contactId,
+        BitcoinPrice__c : 0,
+        ExpirationDate__c: this.txtExpirationDate,
+        SimpleDescription__c : this.txtSimpleDesc,
+        Price__c : this.txtPrice
+      };
+      const recordInput = { apiName: 'Invoice__c', fields };
+      
+      // console.log(METHOD + ' fields', fields);
+      // console.log(METHOD + ' fields JSON', JSON.stringify(fields));
+      // console.log(METHOD + ' recordInput', recordInput);
+      // console.log(METHOD + ' recordInput JSON', JSON.stringify(recordInput));
 
+      createRecord(recordInput)
+      .then((result) => {
+        // console.log(METHOD + ' result', result);
         this.setShowMessage(this.TITLE, 'Invoice generated successfully', this.SUCCESS);
-
-
-
+      }).catch((error) => {
+        console.log(METHOD + ' error', error);
+        this.setShowMessage(this.TITLE, error.body.message, this.ERROR);
+      }).finally(() => {
+        this.isLoading = false;
+        this.updateDetailPage();
+      });
     }
-    // async connectedCallback() {
-    //     let METHOD_NAME = 'connectedCallback';
 
-    //     console.log(METHOD_NAME + ' this.recordId ' + this.recordId);
-    // }
+    async updateDetailPage(){
+      let METHOD = 'updateDetailPage';
+        if (this.contactId){
+          await updateRecord({ fields: { Id: this.contactId }})
+          await notifyRecordUpdateAvailable([{recordId: this.contactId}]);
+      }
+    }
+
     getScreenValidation(){
-        let METHOD = 'getScreenValidation';
-        let strReturn = '';
-        let mandatoryMessage = ' is a mandatory field!' 
+      let strReturn = '';
+      let mandatoryMessage = ' is a mandatory field!' 
 
-        console.log(METHOD + ' start ');
+      if (strReturn == '' && (! this.txtPrice || this.txtPrice == null || this.txtPrice == '' )){
+          this.template.querySelector('[data-id="txtPrice"]').focus();
+          strReturn = 'Price' + mandatoryMessage;
+      }
 
-        if (strReturn == '' && (! this.txtPrice || this.txtPrice == null || this.txtPrice == '' )){
-            this.template.querySelector('[data-id="txtPrice"]').focus();
-            strReturn = 'Price' + mandatoryMessage;
-        }
+      if (strReturn == '' && (! this.txtExpirationDate || this.txtExpirationDate == null || this.txtExpirationDate == '' )){
+          this.template.querySelector('[data-id="txtExpirationDate"]').focus();
+          strReturn = 'Expiration Date' + mandatoryMessage;
+      }
 
-        if (strReturn == '' && (! this.txtExpirationDate || this.txtExpirationDate == null || this.txtExpirationDate == '' )){
-            this.template.querySelector('[data-id="txtExpirationDate"]').focus();
-            strReturn = 'Expiration Date' + mandatoryMessage;
-        }
-
-        console.log(METHOD + ' strReturn ' + strReturn);
-
-        return strReturn;
+      return strReturn;
     }
 
     setShowMessage(strTitle, strMessage, strVariant){
