@@ -3,21 +3,14 @@
       <strong class="slds-m-left_small">Carregando</strong>
       <lightning-spinner  alternative-text='Carregando' class="slds-is-absolute slds-align_absolute-center"></lightning-spinner>
   </template>
-  <lightning-quick-action-panel title="Invoice Generator">
-    <div slot="footer" style="text-align: center;">
-      <lightning-button
-          variant="brand"
-          disabled={disableSubmit} onclick={handleSubimit} class="slds-button btn-primary_x-small slds-m-top_small" label="Generate Invoice" >
-      </lightning-button>
-    </div>
-
+  <div>
     <lightning-card title="Invoice Generator">
       <lightning-layout>
           <lightning-layout-item>
               <lightning-record-form
                   object-api-name={objectApiName}
                   fields={columns}
-                  columns="2"
+                  columns="1"
                   onsuccess={handleSuccess}
                   mode="edit"
                   onsubmit={handleSave}
@@ -28,6 +21,6 @@
           </lightning-layout-item>
       </lightning-layout>
   </lightning-card>    
+  </div>
 
-  </lightning-quick-action-panel>
 </template>

@@ -11,92 +11,54 @@ import {CurrentPageReference} from 'lightning/navigation';
 // import setExcluirGroupMembro from '@salesforce/apex/CapacidadeGrupoController.setExcluirGroupMembro';
 // import getCapacidadeGroupMembrosByMemberId from '@salesforce/apex/CapacidadeGrupoController.getCapacidadeGroupMembrosByMemberId';
 // import setEditarGroupMembro from '@salesforce/apex/CapacidadeGrupoController.setEditarGroupMembro';
-import MDT_CURSO  from '@salesforce/schema/Invoice__c.ContactId__c';
-import MDT_CURSO  from '@salesforce/schema/Invoice__c.Price__c';
-import MDT_CURSO  from '@salesforce/schema/Invoice__c.ExpirationDate__c';
-import MDT_CURSO  from '@salesforce/schema/Invoice__c.Price__c';
-import MDT_CURSO  from '@salesforce/schema/Invoice__c.Price__c';
-import MDT_CURSO  from '@salesforce/schema/Invoice__c.Price__c';
-import MDT_CURSO  from '@salesforce/schema/Invoice__c.Price__c';
-import MDT_CURSO  from '@salesforce/schema/Invoice__c.Price__c';
-
-
+import INVOICE_OBJECT from '@salesforce/schema/Invoice__c';
+import CONTACT_ID  from '@salesforce/schema/Invoice__c.ContactId__c';
+import PRICE from '@salesforce/schema/Invoice__c.Price__c';
+import EXPIRATION_DATE  from '@salesforce/schema/Invoice__c.ExpirationDate__c';
+import SIMPLE_DESCRIPTION  from '@salesforce/schema/Invoice__c.SimpleDescription__c';
 // Contact
 // OpenInvoices__c
 // PastInvoices__c
 // TotalAmountPaid__c
 
 export default class customInvoice extends LightningElement {
-    objectApiName = 'CustomGroupMembers__c'; //Objeto com campo lookup
-    targetLkpField = 'User__c'; //Nome do campo lookup
     hasUpdateApplied = false;
     isLoading = true;
-    lkpFieldReturn = '';
-    showGrid = false;
-    showEdit = false;
-    @track groupMemberEdit = {};
     @track content = [];
-    disableIcons = false;
-    txtCapacidade = '';
     @api value;
 
-    LABEL = {
-        GROUP_MEMBER_ID : 'groupMemberId' , 
-        USER_CONFIGURED_CAPACITY : 'Capacidade' , 
-        NOME_MEMBRO : 'Nome do Membro' , 
-        USER_ID : 'Usuário' , 
-        IS_USER_AVAIBLE : 'Disponível'
-
-    }
-        
-    objectApiName = TURMA_OBJECT;
+    
+    objectApiName = INVOICE_OBJECT;
     @api columns = [
-        MDT_CURSO, 
-        NUM_PARCELA,
-        NAME, 
-        TXT_COD_CONTROLE_TURMA,
-        PKL_STATUS, 
-        PKL_DIA_SEMANA, 
-        DAT_INICIO, 
-        DAT_TERMINO, 
-        PKL_PERIODO, 
-        CHK_TAXA_MATRICULA, 
-        NUM_VALOR_TAXA_MATRICULA ,
-        LKP_PROFISSIONAL
-        //> PKL_TIPO_CALCULO_PROFISSIONAL,
-        //> NUM_VALOR_TOTAL, 
-        //> PER_VALOR_PROFISSIONAL,
-        //> NUM_VALOR_PROFISSIONAL
-        //NUM_VALOR_LIQUIDO, 
-        //
+        CONTACT_ID,
+        PRICE,
+        EXPIRATION_DATE,
+        SIMPLE_DESCRIPTION
     ];
 
-    @api recordId;
+    @api contactId;
     @wire(CurrentPageReference)
     getStateParameters(currentPageReference) {
         this.isLoading = true;
         if (currentPageReference) {
-            this.recordId = currentPageReference.state.recordId;
+            this.contactId = currentPageReference.state.recordId;
             this.isLoading = false;
         }
     }
 
     get disableSubmit(){
-        return this.txtCapacidade == '';
+        return true;
     }
 
-    handleCapacidadeChange(event) {
-        this.txtCapacidade = event.detail.value;
-    }
 
     async closeQuickAction() {
         let METHOD_NAME = 'closeQuickAction';
         this.isLoading = true;
-        console.log(METHOD_NAME + ' this.recordId ' + this.recordId);
+        console.log(METHOD_NAME + ' this.contactId ' + this.contactId);
         // Refresh the detail Page
-        if (this.recordId){
-            await updateRecord({ fields: { Id: this.recordId }})
-            await notifyRecordUpdateAvailable([{recordId: this.recordId}]);
+        if (this.contactId){
+            await updateRecord({ fields: { Id: this.contactId }})
+            await notifyRecordUpdateAvailable([{recordId: this.contactId}]);
         }
         this.isLoading = false;
         // await this.dispatchEvent(new RefreshEvent());
@@ -110,15 +72,13 @@ export default class customInvoice extends LightningElement {
     }
 
     async connectedCallback() {
-        let METHOD_NAME = 'loadCapacidadeGroupMembros';
-        // this.lkpFieldReturn = null;
+        let METHOD_NAME = 'connectedCallback';
         this.isLoading = false;
-        if (this.recordId){
-            console.log(METHOD_NAME + ' this.recordId ' + this.recordId);
-            await this.loadCapacidadeGroupMembros();
+        if (this.contactId){
+            console.log(METHOD_NAME + ' this.contactId ' + this.contactId);
+            // await this.loadMoreContactInformation();
         }
         console.log(METHOD_NAME + ' this.objectApiName ' + this.objectApiName);
-        console.log(METHOD_NAME + ' this.targetLkpField ' + this.targetLkpField);
     }
 
     async disconnectedCallback() {
@@ -135,13 +95,10 @@ export default class customInvoice extends LightningElement {
         this.dispatchEvent(event);
     }
 
-    async loadCapacidadeGroupMembros(){
-        let METHOD_NAME = 'loadCapacidadeGroupMembros';
+    async loadMoreContactInformation(){
+        let METHOD_NAME = 'loadMoreContactInformation';
         // console.log(METHOD_NAME);
-        this.showEdit = false;
         this.loading = true;
-        // this.disableSubmit = true;
-        this.disableIcons = false;
         console.log(METHOD_NAME + ' recordId ', this.recordId);
 
         // await getCapacidadeGroupMembrosCapacidadeById({capacidadeGrupoFilaId : this.recordId})
@@ -152,7 +109,6 @@ export default class customInvoice extends LightningElement {
         //     this.content = result.groupMembers;
 
         //     // Define if will show the grid or not
-        //     this.showGrid = this.content.length > 0;
 
         // }).catch(error => {
         //     console.log(METHOD_NAME + ' data error ' + JSON.stringify(error));
@@ -164,21 +120,39 @@ export default class customInvoice extends LightningElement {
         // console.log(METHOD_NAME + ' this.loading' , this.loading);
     }
 
+    handleSave(event){
+        this.isLoading = true;
+        event.preventDefault(); // stop the form from submitting
+
+        // let blnSubimt = false;
+        let strMessage = '';
+
+        const fields = event.detail.fields;
+
+        // fields.Name = fields.Name.trim().toUpperCase() + ' - ' + fields.PKL_DIA_SEMANA__c + ' - ' + fields.PKL_PERIODO__c;
+
+        // fields.PKL_TIPO_CALCULO_PROFISSIONAL__c = this.cmbTipoSelected;
+        // fields.NUM_VALOR_TOTAL__c = this.txtTotalValue;
+        // fields.PER_VALOR_PROFISSIONAL__c = this.txtPercValue;
+        // fields.NUM_VALOR_PROFISSIONAL__c = this.txtProfValue;
+        // fields.NUM_VALOR_LIQUIDO__c = this.txtNetValue;
+
+        console.log(JSON.stringify(fields));
+        // strMessage = this.TITLE + ': ' + fields.Name;
+
+        // // if (blnSubimt){
+        //     this.template.querySelector('lightning-record-form').submit(fields);
+        //     //this.setShowMessage(this.TITLE, strMessage, 'success');
+        // // }
+        this.isLoading = false;
+    }
+
     async handleSubimit(){
         let METHOD_NAME = 'handleMebroConfigurar';
-        // console.log(METHOD_NAME + ' this.txtCapacidade ' + this.txtCapacidade);
-        // console.log(METHOD_NAME + ' groupMemberEdit ' + JSON.stringify(this.groupMemberEdit));
-        this.groupMemberEdit.userConfiguredCapacity = this.txtCapacidade;
-        this.groupMemberEdit.capacidadeGrupoFilaId = this.recordId;
-        // console.log(METHOD_NAME + ' groupMemberEdit ' + JSON.stringify(this.groupMemberEdit));
-
-        this.txtCapacidade = '';
-
+        
         // console.log(METHOD_NAME + ' event.detail ' , event.detail)
         this.isLoading = true;
         // console.log(METHOD_NAME + ' objGroupMember ' , objGroupMember)
-        let strGroupMember = JSON.stringify(this.groupMemberEdit)
-        console.log(METHOD_NAME + ' strGroupMember ' , strGroupMember)
         // await setEditarGroupMembro({strGroupMember})
         // .then(async result => {
         //     console.log(METHOD_NAME + ' result ' + result);
@@ -193,7 +167,7 @@ export default class customInvoice extends LightningElement {
         //     }
         //     return result;
         // }).then( async result => {
-        //     this.loadCapacidadeGroupMembros();
+        //     this.loadMoreContactInformation();
         // }).catch(error => {
         //     console.log(METHOD_NAME + ' data error ' + JSON.stringify(error));
         //     this.showLocalToast('Erro', 'error', error.body.message);

@@ -2,11 +2,6 @@
     <apiVersion>57.0</apiVersion>
     <isExposed>true</isExposed>
     <targets>
-      <target>lightning__RecordAction</target>
+        <target>lightning__RecordPage</target>
     </targets>
-    <targetConfigs>
-      <targetConfig targets="lightning__RecordAction">
-        <actionType>ScreenAction</actionType>
-      </targetConfig>
-    </targetConfigs>
   </LightningComponentBundle>
