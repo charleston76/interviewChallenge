@@ -5,35 +5,77 @@ public with sharing class InvoiceHelper {
     public static void setBitcoinValue(String invoiceId){
         String METHOD_NAME = 'setBitcoinValue';
 
-        try {
-            Map<String, Object> bitcoinMap = sendRequest();
-            Map<String, Object> mapBpi = getMapValue(bitcoinMap,'bpi');
-            bpi objBitcoin = (bpi) System.JSON.deserialize(JSON.serialize(mapBpi), bpi.class);
-            // system.debug(CLASS_NAME + ' ' + METHOD_NAME + ' objBitcoin' + objBitcoin);
-            system.debug(CLASS_NAME + ' ' + METHOD_NAME + ' objBitcoin.USD.rate_float ' + objBitcoin.USD.rate_float);
-            
+        try {            
+            Decimal bitcoinValue = getDecimalBitcoinValue();
             // Select the invoice record to update
             Invoice__c objInvoice = [
                 SELECT Id, BitcoinPrice__c, Price__c 
                 FROM Invoice__c
                 WHERE Id =: invoiceId
             ];
-
-            system.debug(CLASS_NAME + ' ' + METHOD_NAME + ' objInvoice.Price__c ' + objInvoice.Price__c);
-
-            objInvoice.BitcoinPrice__c = objInvoice.Price__c / objBitcoin.USD.rate_float;
+            objInvoice.BitcoinPrice__c = objInvoice.Price__c / bitcoinValue;
             
             update objInvoice;
+        } catch (Exception objEx) { throw objEx;}
+
+    }
+
+    public static Decimal getDecimalBitcoinValue(){
+        String METHOD_NAME = 'getDecimalBitcoinValue';
+        Decimal returnValue = 0;
+
+        try {
+            Map<String, Object> bitcoinMap = sendRequest();
+            Map<String, Object> mapBpi = getMapValue(bitcoinMap,'bpi');
+            bpi objBitcoin = (bpi) System.JSON.deserialize(JSON.serialize(mapBpi), bpi.class);
+            returnValue = objBitcoin.USD.rate_float;
+                
+        } catch (Exception objEx) { throw objEx;}
+        
+        return returnValue;
+    }
+
+    public static void setBitcoinValues(Set<String> updateId, Set<String> expiredId, Decimal bitcoinValue ){
+        String METHOD_NAME = 'setBitcoinValues';
+        List<Invoice__c> objUpdateData = new List<Invoice__c>();
+        List<Invoice__c> objExpired = new List<Invoice__c>();
+
+        system.debug(CLASS_NAME + ' ' + METHOD_NAME + ' updateId ' + updateId);
+        system.debug(CLASS_NAME + ' ' + METHOD_NAME + ' expiredId ' + expiredId);
+        system.debug(CLASS_NAME + ' ' + METHOD_NAME + ' bitcoinValue ' + bitcoinValue);
+        try {
+            // Select the invoice record to update
+            for (Invoice__c objInvoice: [
+                    SELECT Id, BitcoinPrice__c, Price__c , Status__c   
+                    FROM Invoice__c 
+                    WHERE Id IN : updateId
+            ]){
+                objInvoice.BitcoinPrice__c = objInvoice.Price__c / bitcoinValue;
+                objUpdateData.add(objInvoice);
+            }
+
+            for (Invoice__c objInvoice: [
+                    SELECT Id, ExpirationDate__c, BitcoinPrice__c, Price__c , Status__c   
+                    FROM Invoice__c 
+                    WHERE Id IN : expiredId
+            ]){
+                objInvoice.Status__c = 'Expired';
+                objExpired.add(objInvoice);
+            }
+
+            if (objExpired.size() > 0) update objExpired;
+            if (objUpdateData.size() > 0) update objUpdateData;
 
         } catch (Exception objEx) { throw objEx;}
 
     }
 
-    private static Map<String, Object> getMapValue(Map<String, Object> mapOrigin, String value){
+
+    public static Map<String, Object> getMapValue(Map<String, Object> mapOrigin, String value){
         return (Map<String, Object>) mapOrigin.get(value);
     }
 
-    private static Map<String, Object> sendRequest(){
+    public static Map<String, Object> sendRequest(){
         String METHOD_NAME = 'sendRequest';
         Http objHttp = new Http();
         HttpRequest objReq = new HttpRequest();

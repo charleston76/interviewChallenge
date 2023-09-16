@@ -49,3 +49,8 @@ At this point, we could just use the create record command:
 But just to show you a little bit about the data tree importation, let's do it in another way:
 
     sf data import tree --files scripts/json/Account-Contact.json 
+
+## 04 - Let the job running
+
+        InvoiceBatch objBatch = new InvoiceBatch();
+        Id batchId = Database.executeBatch(objBatch);
