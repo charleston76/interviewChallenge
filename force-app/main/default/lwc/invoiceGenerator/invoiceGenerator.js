@@ -5,6 +5,7 @@ import {CurrentPageReference} from 'lightning/navigation';
 import OPEN_INVOICES from "@salesforce/schema/Contact.OpenInvoices__c";
 import PAST_INVOICES from "@salesforce/schema/Contact.PastInvoices__c";
 import TOTAL_AMOUNT_PAID from "@salesforce/schema/Contact.TotalAmountPaid__c";
+import setBitcoinValue from '@salesforce/apex/InvoiceController.setBitcoinValue';
 
 export default class InvoiceGenerator extends LightningElement {
     contactId;
@@ -34,7 +35,7 @@ export default class InvoiceGenerator extends LightningElement {
       })
       wiredRecord({ error, data }) {
         if (error) {
-          console.log(' wiredRecord error', error);
+          // console.log(' wiredRecord error', error);
           let message = "Unknown error";
           if (Array.isArray(error.body)) {
             message = error.body.map((e) => e.message).join(", ");
@@ -113,11 +114,6 @@ export default class InvoiceGenerator extends LightningElement {
         Price__c : this.txtPrice
       };
       const recordInput = { apiName: 'Invoice__c', fields };
-      
-      // console.log(METHOD + ' fields', fields);
-      // console.log(METHOD + ' fields JSON', JSON.stringify(fields));
-      // console.log(METHOD + ' recordInput', recordInput);
-      // console.log(METHOD + ' recordInput JSON', JSON.stringify(recordInput));
 
       createRecord(recordInput)
       .then((result) => {
@@ -125,7 +121,9 @@ export default class InvoiceGenerator extends LightningElement {
         this.txtExpirationDate = null;
         this.txtSimpleDesc = null;
         this.txtPrice = null;
-
+        this.updateBitcoinValue(result.id);
+        
+      }).then(() => {
         this.setShowMessage(this.TITLE, 'Invoice generated successfully', this.SUCCESS);
       }).catch((error) => {
         console.log(METHOD + ' error', error);
@@ -142,6 +140,22 @@ export default class InvoiceGenerator extends LightningElement {
           await updateRecord({ fields: { Id: this.contactId }})
       }
     }
+
+    updateBitcoinValue(invoiceId){
+      let METHOD_NAME = 'updateBitcoinValue';
+      // console.log(METHOD_NAME + ' invoiceId ' + invoiceId);
+      
+      setBitcoinValue({invoiceId})
+      .then(() => {
+          // console.log(METHOD_NAME + ' setBitcoinValue ');
+      }).catch(error => {
+          console.log(METHOD_NAME + ' data error ' + JSON.stringify(error));
+          this.showLocalToast('Erro', 'error', error.body.message);
+          this.isLoading = false;
+      });        
+
+  }
+  
 
     getScreenValidation(){
       let strReturn = '';
