@@ -35,7 +35,7 @@
                     </lightning-textarea>
                 </div>
             </div>
-            <div>
+            <div if:true={hasAdditionalInformation}>
                 <lightning-accordion onsectiontoggle={handleSectionToggle}>
                     <lightning-accordion-section name="contactInfo" label="Additional Contact Information">
                         <div class="slds-grid slds-wrap slds-border_top">

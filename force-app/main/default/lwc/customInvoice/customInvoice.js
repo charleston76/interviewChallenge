@@ -24,9 +24,8 @@ import SIMPLE_DESCRIPTION  from '@salesforce/schema/Invoice__c.SimpleDescription
 export default class customInvoice extends LightningElement {
     hasUpdateApplied = false;
     isLoading = true;
+    hasAdditionalInformation=false;
     @track content = [];
-    @api value;
-
     
     objectApiName = INVOICE_OBJECT;
     @api columns = [
@@ -128,14 +127,6 @@ export default class customInvoice extends LightningElement {
         let strMessage = '';
 
         const fields = event.detail.fields;
-
-        // fields.Name = fields.Name.trim().toUpperCase() + ' - ' + fields.PKL_DIA_SEMANA__c + ' - ' + fields.PKL_PERIODO__c;
-
-        // fields.PKL_TIPO_CALCULO_PROFISSIONAL__c = this.cmbTipoSelected;
-        // fields.NUM_VALOR_TOTAL__c = this.txtTotalValue;
-        // fields.PER_VALOR_PROFISSIONAL__c = this.txtPercValue;
-        // fields.NUM_VALOR_PROFISSIONAL__c = this.txtProfValue;
-        // fields.NUM_VALOR_LIQUIDO__c = this.txtNetValue;
 
         console.log(JSON.stringify(fields));
         // strMessage = this.TITLE + ': ' + fields.Name;
