@@ -8,6 +8,7 @@
         <members>Invoice__c.ContactId__c</members>
         <members>Invoice__c.ExpirationDate__c</members>
         <members>Invoice__c.Price__c</members>
+        <members>Invoice__c.SimpleDescription__c</members>
         <members>Invoice__c.Status__c</members>
         <name>CustomField</name>
     </types>

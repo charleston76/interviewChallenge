@@ -1,14 +1,30 @@
+// Resize the quiaction
+// https://www.salesforcebolt.com/2021/08/increase-size-width-of-lightning-web.html
+
 import { LightningElement,api, track, wire } from 'lwc';
 import { CloseActionScreenEvent } from 'lightning/actions';
 import { updateRecord, notifyRecordUpdateAvailable  } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import {CurrentPageReference} from 'lightning/navigation';
-import getCapacidadeGroupMembrosCapacidadeById from '@salesforce/apex/CapacidadeGrupoController.getCapacidadeGroupMembrosCapacidadeById';
-import setIncluirGroupMembro from '@salesforce/apex/CapacidadeGrupoController.setIncluirGroupMembro';
-import setExcluirGroupMembro from '@salesforce/apex/CapacidadeGrupoController.setExcluirGroupMembro';
-import getCapacidadeGroupMembrosByMemberId from '@salesforce/apex/CapacidadeGrupoController.getCapacidadeGroupMembrosByMemberId';
-import setEditarGroupMembro from '@salesforce/apex/CapacidadeGrupoController.setEditarGroupMembro';
+// import getCapacidadeGroupMembrosCapacidadeById from '@salesforce/apex/CapacidadeGrupoController.getCapacidadeGroupMembrosCapacidadeById';
+// import setIncluirGroupMembro from '@salesforce/apex/CapacidadeGrupoController.setIncluirGroupMembro';
+// import setExcluirGroupMembro from '@salesforce/apex/CapacidadeGrupoController.setExcluirGroupMembro';
+// import getCapacidadeGroupMembrosByMemberId from '@salesforce/apex/CapacidadeGrupoController.getCapacidadeGroupMembrosByMemberId';
+// import setEditarGroupMembro from '@salesforce/apex/CapacidadeGrupoController.setEditarGroupMembro';
+import MDT_CURSO  from '@salesforce/schema/Invoice__c.ContactId__c';
+import MDT_CURSO  from '@salesforce/schema/Invoice__c.Price__c';
+import MDT_CURSO  from '@salesforce/schema/Invoice__c.ExpirationDate__c';
+import MDT_CURSO  from '@salesforce/schema/Invoice__c.Price__c';
+import MDT_CURSO  from '@salesforce/schema/Invoice__c.Price__c';
+import MDT_CURSO  from '@salesforce/schema/Invoice__c.Price__c';
+import MDT_CURSO  from '@salesforce/schema/Invoice__c.Price__c';
+import MDT_CURSO  from '@salesforce/schema/Invoice__c.Price__c';
 
+
+// Contact
+// OpenInvoices__c
+// PastInvoices__c
+// TotalAmountPaid__c
 
 export default class customInvoice extends LightningElement {
     objectApiName = 'CustomGroupMembers__c'; //Objeto com campo lookup
@@ -33,11 +49,26 @@ export default class customInvoice extends LightningElement {
 
     }
         
-    columns = [
-        { "label": this.LABEL.NOME_MEMBRO , "source": "nomeMembro" },
-        // { "label": this.LABEL.USER_CONFIGURED_CAPACITY , "source": "userConfiguredCapacity" , detail: true },
-        { "label": this.LABEL.USER_CONFIGURED_CAPACITY , "source": "userConfiguredCapacity" },
-        { "label": this.LABEL.IS_USER_AVAIBLE , "source": "isUserAvaible" },
+    objectApiName = TURMA_OBJECT;
+    @api columns = [
+        MDT_CURSO, 
+        NUM_PARCELA,
+        NAME, 
+        TXT_COD_CONTROLE_TURMA,
+        PKL_STATUS, 
+        PKL_DIA_SEMANA, 
+        DAT_INICIO, 
+        DAT_TERMINO, 
+        PKL_PERIODO, 
+        CHK_TAXA_MATRICULA, 
+        NUM_VALOR_TAXA_MATRICULA ,
+        LKP_PROFISSIONAL
+        //> PKL_TIPO_CALCULO_PROFISSIONAL,
+        //> NUM_VALOR_TOTAL, 
+        //> PER_VALOR_PROFISSIONAL,
+        //> NUM_VALOR_PROFISSIONAL
+        //NUM_VALOR_LIQUIDO, 
+        //
     ];
 
     @api recordId;
@@ -78,21 +109,6 @@ export default class customInvoice extends LightningElement {
         
     }
 
-    async handleChangeLookup(event) {
-        this.isLoading = true;
-        this.lkpFieldReturn = event.detail.value;
-        console.log('this.lkpFieldReturn ' + this.lkpFieldReturn);
-        console.log('this.lkpFieldReturn[0] ' + this.lkpFieldReturn[0]);
-        if (this.lkpFieldReturn && this.lkpFieldReturn[0] != null ){
-            await this.handleMebroIncluir(this.lkpFieldReturn[0]);
-            await this.loadCapacidadeGroupMembros();
-            this.lkpFieldReturn = null;
-            this.value = null;
-            this.template.querySelector('lightning-input-field').reset();
-        }
-        this.isLoading = false;
-    }
-
     async connectedCallback() {
         let METHOD_NAME = 'loadCapacidadeGroupMembros';
         // this.lkpFieldReturn = null;
@@ -128,64 +144,25 @@ export default class customInvoice extends LightningElement {
         this.disableIcons = false;
         console.log(METHOD_NAME + ' recordId ', this.recordId);
 
-        await getCapacidadeGroupMembrosCapacidadeById({capacidadeGrupoFilaId : this.recordId})
-        .then(async result => {
-            // console.log(METHOD_NAME + ' JSON.stringify ' + JSON.stringify(result));
-            // console.log(METHOD_NAME + ' result ' + result.groupMembers);
+        // await getCapacidadeGroupMembrosCapacidadeById({capacidadeGrupoFilaId : this.recordId})
+        // .then(async result => {
+        //     // console.log(METHOD_NAME + ' JSON.stringify ' + JSON.stringify(result));
+        //     // console.log(METHOD_NAME + ' result ' + result.groupMembers);
             
-            this.content = result.groupMembers;
+        //     this.content = result.groupMembers;
 
-            // Define if will show the grid or not
-            this.showGrid = this.content.length > 0;
+        //     // Define if will show the grid or not
+        //     this.showGrid = this.content.length > 0;
 
-        }).catch(error => {
-            console.log(METHOD_NAME + ' data error ' + JSON.stringify(error));
-            this.showLocalToast('Erro', 'error', error.body.message);
-            this.isLoading = false;
-        });        
+        // }).catch(error => {
+        //     console.log(METHOD_NAME + ' data error ' + JSON.stringify(error));
+        //     this.showLocalToast('Erro', 'error', error.body.message);
+        //     this.isLoading = false;
+        // });        
 
         this.loading = false;
         // console.log(METHOD_NAME + ' this.loading' , this.loading);
     }
-
-
-    async handleMebroIncluir(userId) {
-        let METHOD_NAME = 'handleMebroIncluir';
-        // console.log(METHOD_NAME + ' event.detail ' , event.detail)
-        this.hasUpdateApplied = true;
-        console.log(METHOD_NAME + ' userId ' , userId)
-        let groupMember = {
-            capacidadeGrupoFilaId : this.recordId,
-            userId : userId,
-            userConfiguredCapacity : 1,
-            isUserAvaible : false
-        }
-
-        // console.log(METHOD_NAME + ' groupMember ' , groupMember)
-
-        let strGroupMember = JSON.stringify(groupMember);
-         console.log(METHOD_NAME + ' strGroupMember ' , strGroupMember)
-
-        await setIncluirGroupMembro({strGroupMember})
-        .then(async result => {
-            console.log(METHOD_NAME + ' result ' + result);
-            
-            if (result.isSuccess){
-                this.isLoading = false;
-                this.showLocalToast('Sucesso', 'success', result.dmlMessage);
-            } else {
-                this.isLoading = false;
-                console.log(METHOD_NAME + ' data error ' + result.dmlMessage);
-                this.showLocalToast('Erro', 'error', result.dmlMessage);
-            }
-        }).catch(error => {
-            console.log(METHOD_NAME + ' data error ' + JSON.stringify(error));
-            this.showLocalToast('Erro', 'error', error.body.message);
-            this.isLoading = false;
-        });        
-
-    }
-
 
     async handleSubimit(){
         let METHOD_NAME = 'handleMebroConfigurar';
@@ -202,103 +179,28 @@ export default class customInvoice extends LightningElement {
         // console.log(METHOD_NAME + ' objGroupMember ' , objGroupMember)
         let strGroupMember = JSON.stringify(this.groupMemberEdit)
         console.log(METHOD_NAME + ' strGroupMember ' , strGroupMember)
-        await setEditarGroupMembro({strGroupMember})
-        .then(async result => {
-            console.log(METHOD_NAME + ' result ' + result);
+        // await setEditarGroupMembro({strGroupMember})
+        // .then(async result => {
+        //     console.log(METHOD_NAME + ' result ' + result);
             
-            if (result.isSuccess){
-                this.isLoading = false;
-                this.showLocalToast('Sucesso', 'success', result.dmlMessage);
-            } else {
-                this.isLoading = false;
-                console.log(METHOD_NAME + ' data error ' + result.dmlMessage);
-                this.showLocalToast('Erro', 'error', result.dmlMessage);
-            }
-            return result;
-        }).then( async result => {
-            this.loadCapacidadeGroupMembros();
-        }).catch(error => {
-            console.log(METHOD_NAME + ' data error ' + JSON.stringify(error));
-            this.showLocalToast('Erro', 'error', error.body.message);
-            this.isLoading = false;
-        });        
+        //     if (result.isSuccess){
+        //         this.isLoading = false;
+        //         this.showLocalToast('Sucesso', 'success', result.dmlMessage);
+        //     } else {
+        //         this.isLoading = false;
+        //         console.log(METHOD_NAME + ' data error ' + result.dmlMessage);
+        //         this.showLocalToast('Erro', 'error', result.dmlMessage);
+        //     }
+        //     return result;
+        // }).then( async result => {
+        //     this.loadCapacidadeGroupMembros();
+        // }).catch(error => {
+        //     console.log(METHOD_NAME + ' data error ' + JSON.stringify(error));
+        //     this.showLocalToast('Erro', 'error', error.body.message);
+        //     this.isLoading = false;
+        // });        
 
     }
 
-    async handleMebroConfigurar(event) {
-        this.hasUpdateApplied = true;
-        let METHOD_NAME = 'handleMebroConfigurar';
-        
-        this.groupMemberEdit = {};
-        this.showGrid = false;
-        this.showEdit = false;
-        // this.disableSubmit = false;
-        this.disableIcons = true;
-        // console.log(METHOD_NAME + ' event.detail ' , event.detail)
-        this.isLoading = true;
-        let groupMember = event.detail;
-        // console.log(METHOD_NAME + ' groupMember ' , groupMember)
-        await getCapacidadeGroupMembrosByMemberId({capacidadeGrupoFilaId : this.recordId, groupMemberId : groupMember})
-        .then(async result => {
-            // console.log(METHOD_NAME + ' JSON.stringify ' + JSON.stringify(result));
-            // console.log(METHOD_NAME + ' result ' + result.groupMembers);
-            
-            this.content = result.groupMembers;
-            this.groupMemberEdit = JSON.parse(JSON.stringify(this.content))[0];
-            // console.log(METHOD_NAME + ' groupMemberEdit ' + this.groupMemberEdit);
 
-            this.txtCapacidade = this.groupMemberEdit.userConfiguredCapacity;
-
-            // Define if will show the grid or not
-            this.showEdit = this.content.length > 0;
-
-        }).catch(error => {
-            console.log(METHOD_NAME + ' data error ' + JSON.stringify(error));
-            this.showLocalToast('Erro', 'error', error.body.message);
-            this.isLoading = false;
-        });        
-
-        this.isLoading = false;
-    }
-
-    async hadlerMembroDelete(event) {
-        this.hasUpdateApplied = true;
-        let METHOD_NAME = 'hadlerMembroDelete';
-        // console.log(METHOD_NAME + ' event.detail ' , event.detail)
-        this.isLoading = true;
-        let groupMember = event.detail;
-        // console.log(METHOD_NAME + ' groupMember ' , groupMember)
-
-        let objGroupMember = {
-            capacidadeGrupoFilaId : this.recordId,
-            groupMemberId : groupMember,
-            userConfiguredCapacity : 0,
-            isUserAvaible : false
-        }
-        // console.log(METHOD_NAME + ' objGroupMember ' , objGroupMember)
-        let strGroupMember = JSON.stringify(objGroupMember);        
-        // console.log(METHOD_NAME + ' strGroupMember ' , strGroupMember)
-        await setExcluirGroupMembro({strGroupMember})
-        .then(async result => {
-            console.log(METHOD_NAME + ' result ' + result);
-            
-            if (result.isSuccess){
-                this.isLoading = false;
-                this.showLocalToast('Sucesso', 'success', result.dmlMessage);
-            } else {
-                this.isLoading = false;
-                console.log(METHOD_NAME + ' data error ' + result.dmlMessage);
-                this.showLocalToast('Erro', 'error', result.dmlMessage);
-            }
-            return result;
-        }).then( async result => {
-            this.loadCapacidadeGroupMembros();
-        }).catch(error => {
-            console.log(METHOD_NAME + ' data error ' + JSON.stringify(error));
-            this.showLocalToast('Erro', 'error', error.body.message);
-            this.isLoading = false;
-        });        
-
-
-    }
 }

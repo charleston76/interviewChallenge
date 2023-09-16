@@ -3,54 +3,31 @@
       <strong class="slds-m-left_small">Carregando</strong>
       <lightning-spinner  alternative-text='Carregando' class="slds-is-absolute slds-align_absolute-center"></lightning-spinner>
   </template>
-  <lightning-quick-action-panel title="Ajustar Membros">
-    <div slot="footer">
+  <lightning-quick-action-panel title="Invoice Generator">
+    <div slot="footer" style="text-align: center;">
       <lightning-button
           variant="brand"
-          disabled={disableSubmit} onclick={handleSubimit} class="slds-button btn-primary_x-small slds-m-top_small" label="Salvar" >
-      </lightning-button>
-      
-      <lightning-button
-          variant="neutral" 
-          onclick={closeQuickAction} class="slds-button btn-primary_x-small slds-m-top_small" label="Fechar" >
+          disabled={disableSubmit} onclick={handleSubimit} class="slds-button btn-primary_x-small slds-m-top_small" label="Generate Invoice" >
       </lightning-button>
     </div>
 
-    <div>
-      <lightning-record-edit-form object-api-name={objectApiName}>
-        <lightning-input-field 
-            id="recordId" 
-            field-name={targetLkpField} 
-            value={value}
-            onchange={handleChangeLookup}>
-        </lightning-input-field>
-      </lightning-record-edit-form>  
-    </div>
+    <lightning-card title="Invoice Generator">
+      <lightning-layout>
+          <lightning-layout-item>
+              <lightning-record-form
+                  object-api-name={objectApiName}
+                  fields={columns}
+                  columns="2"
+                  onsuccess={handleSuccess}
+                  mode="edit"
+                  onsubmit={handleSave}
+                  oncancel={handleCancel}
+                  >
+                  
+              </lightning-record-form>
+          </lightning-layout-item>
+      </lightning-layout>
+  </lightning-card>    
 
-    <div>
-      <template if:true={showGrid}>
-        <c-ajustar-membro-grupo-grid disable-icons={disableIcons} columns={columns} content={content} onselected={handleMebroConfigurar} ondeleted={hadlerMembroDelete} >
-        </c-ajustar-membro-grupo-grid>
-      </template>
-    </div>
-    <div>
-      <template if:true={showEdit}>
-        <c-ajustar-membro-grupo-grid disable-icons={disableIcons} columns={columns} content={content}  >
-        </c-ajustar-membro-grupo-grid>
-          <div>
-            <lightning-input 
-                label="Por favor informe a capacidade desejada"
-                style="width: 26%;"
-                type="number" 
-                value={txtCapacidade}
-                onchange={handleCapacidadeChange}
-                formatter="number" 
-                required="true"
-                step="0">
-            </lightning-input>
-          </div>
-      </template>
-    </div>
-    
   </lightning-quick-action-panel>
 </template>
