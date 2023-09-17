@@ -4,6 +4,10 @@
         <members>InvoiceBatch</members>
         <members>InvoiceController</members>
         <members>InvoiceHelper</members>
+        <members>InvoiceBatchTest</members>
+        <members>InvoiceControllerTest</members>
+        <members>InvoiceSchedule</members>
+        <members>InvoiceScheduleTest</members>
         <name>ApexClass</name>
     </types>
     <types>

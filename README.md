@@ -53,6 +53,7 @@ But just to show you a little bit about the data tree importation, let's do it i
 ## 04  - Coverage
 All of it is very important, but in the end of the day, you will not be able apply on your productive environment, if the coverage is not enough!
 
+![Run All Together](images/RunAllTogether.png)
 
 
 ## 05 - Let the job running
