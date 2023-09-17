@@ -15,6 +15,10 @@
         <name>ApexTestSuite</name>
     </types>
     <types>
+        <members>standard__LightningSales</members>
+        <name>CustomApplication</name>
+    </types>
+    <types>
         <members>Contact.OpenInvoices__c</members>
         <members>Contact.PastInvoices__c</members>
         <members>Contact.TotalAmountPaid__c</members>

@@ -86,3 +86,11 @@ Well, if everything was executed fine until here, you can schedule the job
     sf apex run --file scripts/apex/invoiceScheduler.apex
 
 ![Invoice Scheduler](images/InvoiceScheduler.png)
+
+# Final results
+
+With all the things running together, you'll be able to use the invoice generator on the "Lightning Sales App"
+
+![Invoice Generator](images/invoiceGenerator.png)
+
+So, is that for now...
