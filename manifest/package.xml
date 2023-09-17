@@ -6,8 +6,10 @@
         <members>InvoiceController</members>
         <members>InvoiceControllerTest</members>
         <members>InvoiceHelper</members>
+        <members>InvoiceMockUpTest</members>
         <members>InvoiceSchedule</members>
         <members>InvoiceScheduleTest</members>
+        <members>TestDataFactory</members>
         <name>ApexClass</name>
     </types>
     <types>

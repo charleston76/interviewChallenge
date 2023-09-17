@@ -18,7 +18,7 @@ What is supposed to show you here?
     * Apex classes and different utilizations;
 * Bash script knowledge;
 * Simple documentation approach;
-* etc;
+* Etc, etc;
 
 And that, is supposed to work with simple steps, like counting from 1 to 5:
 
@@ -41,11 +41,11 @@ So, let's step by step get this project running...
 
 To make our lives easy, we can automate many things, putting the Salesforce CLI, and the bash scripts to run together!
 
-    ./scripts/bash/1-createScratchOrg.sh tmpOrg
+    ./scripts/bash/createScratchOrg.sh tmpOrg
 
 ![Scratch Org Creation](images/01-ScratchOrgCreation.png)
 
-## 02 - Custom fields and permissions
+## 02 - Custom metadata and permissions
 
 I'm using a custom Invoice object here.
 To create the necessary things and have access on that, just execute the command below:
