@@ -53,8 +53,15 @@ But just to show you a little bit about the data tree importation, let's do it i
 ## 04  - Coverage
 All of it is very important, but in the end of the day, you will not be able apply on your productive environment, if the coverage is not enough!
 
+Here you'll have this [Apex Test Suite](force-app/main/default/testSuites/TestAllTogether.testSuite-meta.xml) to easily get sure about that!
+
 ![Run All Together](images/RunAllTogether.png)
 
+So, you can really check if the things are running as supposed to be:
+
+    sf project deploy start --manifest manifest/package-1Objects.xml -l RunSpecifiedTests -t InvoiceBatchTest InvoiceControllerTest InvoiceScheduleTest
+
+![Full Deployment](images/fullDeployment.png)
 
 ## 05 - Let the job running
 
