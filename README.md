@@ -50,7 +50,7 @@ To make our lives easy, we can automate many things, putting the Salesforce CLI,
 I'm using a custom Invoice object here.
 To create the necessary things and have access on that, just execute the command below:
 
-    sf project deploy start --ignore-conflicts --manifest manifest/package-1Objects.xml
+    sf project deploy start --ignore-conflicts --manifest manifest/package.xml
 
 After that, let's give the permissions:
 
@@ -75,7 +75,7 @@ Here you'll have this [Apex Test Suite](force-app/main/default/testSuites/TestAl
 
 So, you can really check if the things are running as supposed to be:
 
-    sf project deploy start --manifest manifest/package-1Objects.xml -l RunSpecifiedTests -t InvoiceBatchTest InvoiceControllerTest InvoiceScheduleTest
+    sf project deploy start --manifest manifest/package.xml -l RunSpecifiedTests -t InvoiceBatchTest InvoiceControllerTest InvoiceScheduleTest
 
 ![Full Deployment](images/fullDeployment.png)
 
