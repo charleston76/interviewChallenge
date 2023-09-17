@@ -51,9 +51,14 @@ But just to show you a little bit about the data tree importation, let's do it i
     sf data import tree --files scripts/json/Account-Contact.json 
 
 ## 04  - Coverage
+All of it is very important, but in the end of the day, you will not be able apply on your productive environment, if the coverage is not enough!
 
 
-## 04 - Let the job running
 
-        InvoiceBatch objBatch = new InvoiceBatch();
-        Id batchId = Database.executeBatch(objBatch);
+## 05 - Let the job running
+
+Well, if everything was executed fine until here, you can schedule the job
+
+    sf apex run --file scripts/apex/invoiceScheduler.apex
+
+![Invoice Scheduler](images/InvoiceScheduler.png)
