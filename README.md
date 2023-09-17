@@ -15,9 +15,25 @@ What is supposed to show you here?
     * Lightning Data Service;
     * Lightning Design System;
     * Lightning Web Components;
+    * Apex classes and different utilizations;
 * Bash script knowledge;
+* Simple documentation approach;
+* etc;
 
+And that, is supposed to work with simple steps, like counting from 1 to 5:
 
+1. Create the scratch org environment;
+1. Create the background application;
+1. Import initial data;
+1. Ensure the code coverage and production deployment (whenever needed);
+1. Put a job to run;
+
+I'm serious, the **steps are described in the next sections**.
+
+Want to see more cool things besides that?
+Take a look in my youtube channel!
+
+[![youtube channel](images/santosforceChannel.png)](https://www.youtube.com/channel/UCn4eRGgTiZLz1rb2qXLfjew)!
 
 So, let's step by step get this project running...
 
@@ -36,7 +52,7 @@ To create the necessary things and have access on that, just execute the command
 
     sf project deploy start --ignore-conflicts --manifest manifest/package-1Objects.xml
 
-After that, let's give the permission:
+After that, let's give the permissions:
 
     sfdx force:user:permset:assign --perm-set-name InterviewChallenge --target-org tmpOrg
 
@@ -46,7 +62,7 @@ At this point, we could just use the create record command:
 
     sf data create record --sobject Account --values "Name='Some Account Name' Website=www.example.com"
 
-But just to show you a little bit about the data tree importation, let's do it in another way:
+But just to show you a little bit about the data tree importation, let's do it in another way instead:
 
     sf data import tree --files scripts/json/Account-Contact.json 
 
